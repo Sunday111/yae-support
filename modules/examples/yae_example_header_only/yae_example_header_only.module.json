@@ -1,0 +1,9 @@
+{
+    "ModuleType": "Library",
+    "Dependencies": {
+        "Public": [],
+        "Private": [
+            "yae_example_library"
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "ModuleType": "Library",
+    "Dependencies": {
+        "Public": [
+            "CppReflection",
+            "unordered_dense"
+        ],
+        "Private": [
+            "fmtlib"
+        ]
+    }
+}

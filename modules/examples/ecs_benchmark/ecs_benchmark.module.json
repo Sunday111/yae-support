@@ -1,0 +1,14 @@
+{
+    "ModuleType": "Executable",
+    "Dependencies": {
+        "Public": [
+            "gbench_main",
+            "CppReflection",
+            "unordered_dense",
+            "ecs"
+        ],
+        "Private": [
+            "fmtlib"
+        ]
+    }
+}

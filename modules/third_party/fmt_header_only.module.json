@@ -1,0 +1,7 @@
+{
+    "ModuleType": "GitClone",
+    "GitUrl": "https://github.com/fmtlib/fmt",
+    "GitTag": "11.1.1",
+    "TargetName": "fmt::fmt-header-only",
+    "LocalPath": "fmt/11_1_1"
+}

@@ -1,0 +1,10 @@
+Checks: "-modernize-use-trailing-return-type,\
+-cppcoreguidelines-avoid-non-const-global-variables,\
+-cppcoreguidelines-owning-memory,\
+-cert-err58-cpp,\
+-google-readability-avoid-underscore-in-googletest-name,\
+"
+WarningsAsErrors: '*'
+# Use clang-format
+FormatStyle: file
+InheritParentConfig: true

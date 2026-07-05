@@ -1,0 +1,8 @@
+{
+    "ModuleType": "Executable",
+    "EnableTesting": true,
+    "Dependencies": {
+        "Public": ["ecs", "gtest_main"],
+        "Private": ["fmtlib"]
+    }
+}
