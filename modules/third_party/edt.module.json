@@ -1,7 +1,7 @@
 {
     "ModuleType": "GitClone",
     "GitUrl": "https://github.com/Sunday111/EverydayTools",
-    "GitTag": "master",
+    "GitTag": "main",
     "TargetName": "edt",
     "LocalPath": "Sunday111/EverydayTools",
     "Dependencies": {
