@@ -3,7 +3,7 @@
     "dependencies": {
         "packages": [
             {
-                "link": "https://github.com/Sunday111/CppReflection for_yae",
+                "link": "https://github.com/Sunday111/CppReflection main",
                 "packages": [
                     "CppReflection"
                 ]
