@@ -7,6 +7,12 @@
                 "packages": [
                     "CppReflection"
                 ]
+            },
+            {
+                "link": "https://github.com/Sunday111/EverydayTools main",
+                "packages": [
+                    "EverydayTools"
+                ]
             }
         ]
     }
