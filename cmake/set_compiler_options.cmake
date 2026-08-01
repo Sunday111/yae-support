@@ -72,10 +72,17 @@ function(set_generic_compiler_options target_name access)
     endif()
 
     if ("CUDA" IN_LIST languages)
-        set(cuda_compile_opts
-            --Werror cross-execution-space-call
-            --expt-relaxed-constexpr
-        )
+        set(cuda_compile_opts)
+        if (CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
+            list(APPEND cuda_compile_opts
+                --Werror cross-execution-space-call
+                --expt-relaxed-constexpr
+            )
+        elseif (CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
+            list(APPEND cuda_compile_opts
+                -Wno-unknown-cuda-version
+            )
+        endif()
         target_compile_options(${target_name} ${access} $<$<COMPILE_LANGUAGE:CUDA>:${cuda_compile_opts}>)
     endif()
 
