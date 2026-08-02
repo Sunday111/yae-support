@@ -1,0 +1,40 @@
+name: tests
+
+on:
+  # A branch with an open pull request would otherwise be built twice: once for the
+  # push and once for the pull request.
+  push:
+    branches: [main]
+  pull_request:
+
+# Supersede the runs still going for older commits on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out yae-support
+        uses: actions/checkout@v4
+        with:
+          path: yae-support
+
+      - name: Check out the yae build tool
+        uses: actions/checkout@v4
+        with:
+          repository: Sunday111/yae
+          path: yae
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # The cmake modules and scripts here have no project of their own to build. yae
+      # decides how they are called and its tests cover that, taking the checkout to
+      # test from YAE_SUPPORT_ROOT.
+      - name: Run yae's tests against this checkout
+        working-directory: yae
+        run: uv run --project . pytest
+        env:
+          YAE_SUPPORT_ROOT: ${{ github.workspace }}/yae-support
