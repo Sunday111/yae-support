@@ -59,10 +59,14 @@ function(set_generic_compiler_options target_name access)
                 -Wstrict-null-sentinel
             )
         elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-            # only special branch of Clang currently but it is really helpful
-            # list(APPEND cpp_compile_opts
-            # -Wlifetime # shows object lifetime issues
-            # )
+            list(APPEND cpp_compile_opts
+                # Clang 19 added this to -Wextra. A C API whose structs are meant to
+                # be filled in partly - Vulkan's create-infos above all - trips it on
+                # every use, and the fields it names are the ones the caller wants
+                # zeroed. Leaving it on means a pragma in every file that touches
+                # such an API, which is noise that hides nothing.
+                -Wno-missing-designated-field-initializers
+            )
         endif()
     endif()
 
