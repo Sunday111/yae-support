@@ -1,7 +1,7 @@
 {
     "ModuleType": "GitClone",
     "GitUrl": "https://github.com/martinus/unordered_dense",
-    "GitTag": "v4.1.2",
+    "GitTag": "v4.9.2",
     "TargetName": "unordered_dense",
     "LocalPath": "martinus/unordered_dense"
 }
