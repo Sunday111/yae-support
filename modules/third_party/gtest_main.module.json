@@ -1,9 +1,9 @@
 {
     "ModuleType": "GitClone",
     "GitUrl": "https://github.com/google/googletest",
-    "GitTag": "v1.15.2",
+    "GitTag": "v1.18.0",
     "TargetName": "gtest_main",
-    "LocalPath": "google/googletest/1_15_2",
+    "LocalPath": "google/googletest/1_18_0",
     "CMakeOptions": {
         "INSTALL_GTEST": false,
         "BUILD_GMOCK": false
