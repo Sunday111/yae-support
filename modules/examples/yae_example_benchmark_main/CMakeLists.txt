@@ -9,6 +9,3 @@ target_link_libraries(yae_example_benchmark_main PUBLIC benchmark::benchmark_mai
 target_include_directories(yae_example_benchmark_main PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/code/public)
 target_include_directories(yae_example_benchmark_main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/code/private)
 enable_debug_info_compression_for(yae_example_benchmark_main)
-if(COMMAND link_cpp_lib_statically)
-    link_cpp_lib_statically(yae_example_benchmark_main)
-endif()

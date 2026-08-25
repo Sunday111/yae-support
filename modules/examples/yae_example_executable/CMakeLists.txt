@@ -11,6 +11,3 @@ target_link_libraries(yae_example_executable PRIVATE yae_example_header_only
 target_include_directories(yae_example_executable PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/code/public)
 target_include_directories(yae_example_executable PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/code/private)
 enable_debug_info_compression_for(yae_example_executable)
-if(COMMAND link_cpp_lib_statically)
-    link_cpp_lib_statically(yae_example_executable)
-endif()
