@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.20)
+
+function(configure_cpp_lib cpp_lib)
+    if(cpp_lib STREQUAL "llvm-static")
+        if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            message(FATAL_ERROR "cpp-lib llvm-static requires a Clang C++ compiler")
+        endif()
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-stdlib=libc++>")
+        add_link_options(-stdlib=libc++)
+    elseif(cpp_lib STREQUAL "gcc-static")
+        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-stdlib=libstdc++>")
+            add_link_options(-stdlib=libstdc++)
+        elseif(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            message(FATAL_ERROR "cpp-lib gcc-static requires a Clang or GNU C++ compiler")
+        endif()
+    else()
+        message(FATAL_ERROR "Unknown cpp-lib: ${cpp_lib}")
+    endif()
+
+    set(YAE_CPP_LIB "${cpp_lib}" PARENT_SCOPE)
+endfunction()
+
+function(link_cpp_lib_statically target_name)
+    if(YAE_CPP_LIB STREQUAL "llvm-static")
+        foreach(library_name libc++.a libc++abi.a)
+            execute_process(
+                COMMAND "${CMAKE_CXX_COMPILER}" --print-file-name=${library_name}
+                OUTPUT_VARIABLE library_path
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                COMMAND_ERROR_IS_FATAL ANY)
+            if(NOT IS_ABSOLUTE "${library_path}" OR NOT EXISTS "${library_path}")
+                message(FATAL_ERROR "Could not find ${library_name} for ${CMAKE_CXX_COMPILER}")
+            endif()
+            target_link_libraries(${target_name} PRIVATE "${library_path}")
+        endforeach()
+        target_link_options(${target_name} PRIVATE -nostdlib++)
+    elseif(YAE_CPP_LIB STREQUAL "gcc-static")
+        target_link_options(${target_name} PRIVATE -static-libstdc++)
+    else()
+        message(FATAL_ERROR "cpp-lib was not configured")
+    endif()
+endfunction()
