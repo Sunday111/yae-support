@@ -1,13 +1,10 @@
 {
     "ModuleType": "GitClone",
     "GitUrl": "https://github.com/google/benchmark",
-    "GitTag": "v1.9.4",
+    "GitTag": "v1.9.5",
     "TargetName": "benchmark::benchmark",
-    "LocalPath": "google/benchmark/1_9_4",
+    "LocalPath": "google/benchmark/1_9_5",
     "CMakeOptions": {
         "BENCHMARK_ENABLE_TESTING": false
-    },
-    "ExtraCMakeFiles": [
-        "gbench.module"
-    ]
+    }
 }

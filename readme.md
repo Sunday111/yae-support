@@ -6,17 +6,24 @@ This repository contains:
 
 - `cmake/`: CMake utility modules used by generated projects.
 - `scripts/`: scripts run by generated projects at build time.
+- `tests/`: unit tests for the build-time scripts.
 - `modules/third_party/`: common third-party module declarations.
 - `modules/examples/`: example modules used for YAE validation and demos.
 
 YAE injects this package as an implicit dependency so generated CMake projects do not need a `YAE_ROOT` path.
 
 Everything here is used by generated projects while they build, and those projects must build without
-YAE installed — so this package cannot depend on it. `scripts/` needs a Python interpreter, which
-generated projects find with `find_package(Python3)`.
+YAE installed — so this package cannot depend on it. `scripts/` needs Python 3.12 or newer, which
+generated projects find with `find_package(Python3 3.12)`.
 
-The scripts are tested from YAE's test suite rather than here, since it is YAE that decides how they
-are called.
+The scripts have unit tests in this repository. CI also runs YAE's integration suite against this
+checkout so changes to the generated-project interface are visible before the repositories land.
+
+Run the unit tests with:
+
+```sh
+uv run --python 3.12 --with pytest pytest
+```
 
 ## Scripts
 
