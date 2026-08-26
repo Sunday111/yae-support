@@ -1,6 +1,7 @@
 name: tests
 
 on:
+  workflow_dispatch:
   # A branch with an open pull request would otherwise be built twice: once for the
   # push and once for the pull request.
   push:
@@ -13,28 +14,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  linux:
+  internal:
+    name: Internal support tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Run tests
+        run: uv run --python 3.12 --with pytest pytest
+
+  yae-main-integration:
+    name: YAE main integration
     runs-on: ubuntu-latest
     steps:
       - name: Check out yae-support
         uses: actions/checkout@v4
         with:
           path: yae-support
-
-      - name: Check out the yae build tool
+      - name: Check out YAE
         uses: actions/checkout@v4
         with:
           repository: Sunday111/yae
           path: yae
-
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-
-      # The cmake modules and scripts here have no project of their own to build. yae
-      # decides how they are called and its tests cover that, taking the checkout to
-      # test from YAE_SUPPORT_ROOT.
-      - name: Run yae's tests against this checkout
+      - name: Run integration tests
         working-directory: yae
         run: uv run --project . pytest
+        env:
+          YAE_SUPPORT_ROOT: ${{ github.workspace }}/yae-support
+      - name: Run generated-project integration
+        working-directory: yae
+        run: uv run --project . yae self-test
         env:
           YAE_SUPPORT_ROOT: ${{ github.workspace }}/yae-support
