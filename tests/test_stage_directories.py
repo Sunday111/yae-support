@@ -611,6 +611,38 @@ def test_two_modules_claiming_the_same_path_is_an_error(staging, tmp_path: Path)
     assert not second_manifest.exists()
 
 
+@pytest.mark.parametrize("second_module", ["first", "second"])
+def test_same_path_in_separate_destinations_is_independent(
+    staging, tmp_path: Path, second_module: str
+) -> None:
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    write(first / "shared.txt", "first")
+    write(second / "shared.txt", "second")
+    destination_root = tmp_path / "out"
+    entries = {
+        "content/first.manifest": [first],
+        f"assets/{second_module}.manifest": [second],
+    }
+    plan = active_manifest_plan(tmp_path, entries)
+
+    for expected_copies in (1, 0):
+        assert staging.reconcile_staging(destination_root, plan.parent, plan) == (0, 0)
+        for relative_manifest, sources in entries.items():
+            destination = destination_root / Path(relative_manifest).parent
+            assert staging.stage_directories(
+                destination, sources, plan.parent / relative_manifest, plan
+            ) == (expected_copies, 0)
+            assert (destination / "shared.txt").read_text(encoding="utf-8") == sources[0].name
+
+    (first / "shared.txt").unlink()
+    assert staging.stage_directories(
+        destination_root / "content", [first], plan.parent / "content/first.manifest", plan
+    ) == (0, 1)
+    assert not (destination_root / "content/shared.txt").exists()
+    assert (destination_root / "assets/shared.txt").read_text(encoding="utf-8") == "second"
+
+
 def test_concurrent_modules_cannot_claim_the_same_path(staging, tmp_path: Path) -> None:
     first = tmp_path / "first"
     second = tmp_path / "second"

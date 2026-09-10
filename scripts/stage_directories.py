@@ -374,7 +374,10 @@ def stage_directories(
                 raise StagingError(
                     f"Staging sources do not match the active project plan: {manifest}"
                 )
-            other_owners = collect_manifest_owners(set(staging_plan), excluded=manifest)
+            destination_manifests = {
+                path for path in staging_plan if path.parent == manifest.parent
+            }
+            other_owners = collect_manifest_owners(destination_manifests, excluded=manifest)
         return stage_collected_sources(destination, provided, manifest, other_owners)
 
 
