@@ -46,6 +46,8 @@ jobs:
           YAE_SUPPORT_ROOT: ${{ github.workspace }}/yae-support
       - name: Run generated-project integration
         working-directory: yae
-        run: uv run --project . yae self-test
+        run: |
+          git -C "$YAE_SUPPORT_ROOT" switch -C main
+          uv run --project . yae self-test
         env:
           YAE_SUPPORT_ROOT: ${{ github.workspace }}/yae-support
